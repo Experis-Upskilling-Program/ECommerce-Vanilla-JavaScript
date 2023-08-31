@@ -7,7 +7,34 @@
     <link rel="stylesheet" href="./css/main.css">
 </head>
 <body>
-    <div class="data-list" data-product-list></div>
+    <div class="container">
+        <form id="form-product" class="form-product" data-form-product>
+            <div class="field">
+                <label for="name">Nombre</label>
+                <input id="name" type="text" />
+            </div>
+            <div class="field">
+                <label for="price">Precio</label>
+                <input id="price" type="number" />
+            </div>
+            <div class="field">
+                <label for="category">Categorias</label>
+                <select name="category" id="category">
+                    <option value="">Seleccione...</option>
+                    <option value="fruits">Frutas</option>
+                    <option value="vegetables">Vegetales</option>
+                </select>
+            </div>
+            <div class="field">
+                <label for="quantity">Cantidad</label>
+                <input id="quantity" type="number" />
+            </div>
+            <div class="field">
+                <button type="submit">Crear Producto</button>
+            </div>
+        </form>
+        <div class="data-list" data-product-list></div>
+    </div>
     
     <script src="./js/main.js"></script>
 </body>

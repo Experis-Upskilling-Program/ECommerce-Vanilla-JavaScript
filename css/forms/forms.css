@@ -1,0 +1,19 @@
+#form-product {
+    /* border: 3px dotted blue; */
+    margin: 0 auto;
+    width: 70%;
+}
+
+.field {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.field input,
+.field select,
+.field button {
+    margin: 0.25rem 0.5rem;
+    width: 14rem;
+}
