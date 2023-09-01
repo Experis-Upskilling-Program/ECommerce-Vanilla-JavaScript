@@ -11,6 +11,15 @@ console.log( $formProduct );
 const showData = () => {
     const allProducts = loadData();         // Obtenemos los datos del LocalStorage
 
+    if( allProducts.length == 0 ) {
+        const $pEl = document.createElement( 'p' );
+
+        $pEl.setAttribute( 'class', 'no-products' );
+        $pEl.textContent = 'No hay productos registrados';
+
+        return $dataList.appendChild( $pEl );
+    }
+
     $dataList.innerHTML = '';               // Limpiamos listado de productos en el DOM
 
     // Creando las etiquetas necesarias para crear una tabla
@@ -22,7 +31,7 @@ const showData = () => {
     $tableEl.setAttribute( 'cellspacing', '1' );
     $tableEl.setAttribute( 'cellpadding', '1' );
     $tableEl.setAttribute( 'border', '1' );
-    
+
     // Define los titulos de cada columna por defecto
     const titles = [ 'Nombre', 'Precio', 'Categoria', 'Cantidad', 'Acciones' ];
 
@@ -87,6 +96,7 @@ $formProduct.addEventListener( 'submit', ( event ) => {
     event.preventDefault();
 
     const product = {
+        id: Date.now(),
         name: document.querySelector( '[data-input-name]' ).value,
         price: Number( document.querySelector( '[data-input-price]' ).value ),
         quantity: Number( document.querySelector( '[data-input-quantity]' ).value ),
