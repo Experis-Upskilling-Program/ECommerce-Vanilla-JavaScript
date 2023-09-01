@@ -9,24 +9,61 @@ console.log( $formProduct );
 
 /** Dibuja en el DOM */
 const showData = () => {
-    const allProducts = loadData();
+    const allProducts = loadData();         // Obtenemos los datos del LocalStorage
 
-    $dataList.innerHTML = '';
+    $dataList.innerHTML = '';               // Limpiamos listado de productos en el DOM
 
-    const $ulEl = document.createElement( 'ul' );
-    $ulEl.setAttribute( 'class', 'product-list' );
+    // Creando las etiquetas necesarias para crear una tabla
+    const 
+        $tableEl = document.createElement( 'table' ),
+        $theadEl = document.createElement( 'thead' ),
+        $tbodyEl = document.createElement( 'tbody' );
 
-    allProducts.forEach( product => {
-        const $liEl = document.createElement( 'li' );
-        $liEl.setAttribute( 'class', 'product-item' );
-        $liEl.textContent = product.name;
-        $ulEl.appendChild( $liEl );
+    $tableEl.setAttribute( 'cellspacing', '1' );
+    $tableEl.setAttribute( 'cellpadding', '1' );
+    $tableEl.setAttribute( 'border', '1' );
+    
+    // Define los titulos de cada columna por defecto
+    const titles = [ 'Nombre', 'Precio', 'Categoria', 'Cantidad', 'Acciones' ];
+
+    // Iteramos y creamos los encabezados de la tabla para cada una de las columnas
+    titles.forEach( title => {
+        const $thEl = document.createElement( 'th' );
+        $thEl.textContent = title;
+        $theadEl.appendChild( $thEl );
     });
 
-    console.log( $ulEl );
-    console.log( allProducts );
+    // Iteramos los datos obtenidos para crear una fila dentro de la tabla por cada objecto
+    allProducts.forEach( product => {
+        const 
+            $trEl = document.createElement( 'tr' ),
+            $btnEdit = document.createElement( 'button' ),
+            $btnDelete = document.createElement( 'button' );
 
-    $dataList.appendChild( $ulEl );
+
+        $trEl.setAttribute( 'class', 'product-item' );
+        
+        // Iterar las propiedades de cada uno de los objectos (product) registrados en el LocalStorate
+        for ( const [ key, value ] of Object.entries( product ) ) {
+            const $tdEl = document.createElement( 'td' );
+            $tdEl.textContent = value;                      // Aqui agrega el dato de cada propiedad a cada columna
+            $trEl.appendChild( $tdEl );
+        }
+
+        
+
+        //$trEl.textContent = product.name;
+        $tbodyEl.appendChild( $trEl );              // Agrega el elemento de la fila la cuerpo de la tabla
+    });
+
+    // Agrega el encabezado y el cuerpo de la tabla a la tabla
+    $tableEl.appendChild( $theadEl );
+    $tableEl.appendChild( $tbodyEl );
+
+    // console.log( $tableEl );
+    // console.log( allProducts );
+
+    $dataList.appendChild( $tableEl );      // Agregamos la tabla al DOM
 }
 
 /** Crear Producto */
