@@ -17,3 +17,15 @@
     margin: 0.25rem 0.5rem;
     width: 14rem;
 }
+
+tr.product-item {
+    display: flex;
+}
+
+td {
+    flex: 1 0 6rem;      /* TODO: Arreglar tamano de las celdas respecto a los encabezados */
+}
+
+td.id {
+    order: 5;
+}

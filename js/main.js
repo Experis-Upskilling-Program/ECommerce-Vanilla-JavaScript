@@ -7,8 +7,17 @@ const
 
 console.log( $formProduct );
 
+function editProduct( productId ) {
+    console.log( 'Editando ando el ID:', productId );
+}
+
+function deleteProduct( productId ) {
+    console.log( 'Borrando ando el ID:', productId );
+}
+
+
 /** Dibuja en el DOM */
-const showData = () => {
+function showData () {
     const allProducts = loadData();         // Obtenemos los datos del LocalStorage
 
     if( allProducts.length == 0 ) {
@@ -26,7 +35,8 @@ const showData = () => {
     const 
         $tableEl = document.createElement( 'table' ),
         $theadEl = document.createElement( 'thead' ),
-        $tbodyEl = document.createElement( 'tbody' );
+        $tbodyEl = document.createElement( 'tbody' ),
+        $trEl = document.createElement( 'tr' );
 
     $tableEl.setAttribute( 'cellspacing', '1' );
     $tableEl.setAttribute( 'cellpadding', '1' );
@@ -39,8 +49,10 @@ const showData = () => {
     titles.forEach( title => {
         const $thEl = document.createElement( 'th' );
         $thEl.textContent = title;
-        $theadEl.appendChild( $thEl );
+        $trEl.appendChild( $thEl );
     });
+
+    $theadEl.appendChild( $trEl );
 
     // Iteramos los datos obtenidos para crear una fila dentro de la tabla por cada objecto
     allProducts.forEach( product => {
@@ -55,11 +67,34 @@ const showData = () => {
         // Iterar las propiedades de cada uno de los objectos (product) registrados en el LocalStorate
         for ( const [ key, value ] of Object.entries( product ) ) {
             const $tdEl = document.createElement( 'td' );
-            $tdEl.textContent = value;                      // Aqui agrega el dato de cada propiedad a cada columna
+
+            $tdEl.setAttribute( 'class', `${ key.toLocaleLowerCase() }` );
+
+            if( key != 'id' ) 
+                $tdEl.textContent = value;                      // Aqui agrega el dato de cada propiedad a cada columna
+            else {
+                $btnEdit.textContent = 'Edit';
+                $btnDelete.textContent = 'Delete';
+
+                // Pasa los datos al boton editar con el metodo de DataSet
+                $btnEdit.setAttribute( 'data-edit', `${ product.id }` );     // Esto funciona
+                $btnEdit.addEventListener( 'click', ( event ) => {
+                    // console.log( event.target.dataset.edit );                // Tambien obtiene el 'productId'
+                    editProduct( event.target.dataset.edit );
+                });
+                
+                // Pasa los datos al boton eliminar directamente sin el DataSet
+                $btnDelete.addEventListener( 'click', () => {
+                    deleteProduct( product.id );
+                });
+
+                $tdEl.appendChild( $btnEdit );
+                $tdEl.appendChild( $btnDelete );
+            } 
+
+
             $trEl.appendChild( $tdEl );
         }
-
-        
 
         //$trEl.textContent = product.name;
         $tbodyEl.appendChild( $trEl );              // Agrega el elemento de la fila la cuerpo de la tabla
@@ -96,11 +131,11 @@ $formProduct.addEventListener( 'submit', ( event ) => {
     event.preventDefault();
 
     const product = {
-        id: Date.now(),
         name: document.querySelector( '[data-input-name]' ).value,
         price: Number( document.querySelector( '[data-input-price]' ).value ),
         quantity: Number( document.querySelector( '[data-input-quantity]' ).value ),
-        category: document.querySelector( '[data-input-category]' ).value
+        category: document.querySelector( '[data-input-category]' ).value,
+        id: Date.now()
     }
 
     createProduct( product );
